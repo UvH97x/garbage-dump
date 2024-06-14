@@ -132,5 +132,5 @@ buttonStart.addEventListener("click", () => {
     intervalTime = parseInt(inputInterval.value);
     initializeSpins();
     drawSpins();
-    setInterval(stepSimulation, intervalTime);
+    intervalId = setInterval(stepSimulation, intervalTime);
 });
