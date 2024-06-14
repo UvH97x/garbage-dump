@@ -22,7 +22,7 @@ canvas.height = 500;
 const inputGridSize = document.getElementById("gridSize");
 const inputJ_ex = document.getElementById("J_ex");
 const inputInterval = document.getElementById("intervalTime");
-const buttonFaster = document.getElementById("fasterButoon");
+const buttonFaster = document.getElementById("fasterButton");
 const buttonSlower = document.getElementById("slowerButton");
 const buttonStart = document.getElementById("startButton"); 
 
@@ -108,14 +108,16 @@ function getNeighbors(x, y) {
 
 // シミュレーション速度の変更
 buttonFaster.addEventListener("click", () => {
-    if (intervalTime > 100) {
-        intervalTime -= 100;
+    if (intervalTime > 10) {
+        intervalTime -= 10;
+        inputInterval.value = intervalTime;
         clearInterval(intervalId);
         intervalId = setInterval(stepSimulation, intervalTime);
     }
 });
 buttonSlower.addEventListener("click", () => {
-    intervalTime += 100;
+    intervalTime += 10;
+    inputInterval.value = intervalTime;
     clearInterval(intervalId);
     intervalId = setInterval(stepSimulation. intervalTime);
 });
