@@ -18,6 +18,14 @@ const ctx = canvas.getContext("2d");
 canvas.width = 500;
 canvas.height = 500;
 
+// その他の参照を取得
+const inputGridSize = document.getElementById("gridSize");
+const inputJ_ex = document.getElementById("J_ex");
+const inputInterval = document.getElementById("intervalTime");
+const buttonFaster = document.getElementById("fasterButoon");
+const buttonSlower = document.getElementById("slowerButton");
+const buttonStart = document.getElementById("startButton"); 
+
 // 初期化関数
 // spinsは0 <= Θ < 360を持つように設定
 function initializeSpins() {
@@ -99,27 +107,27 @@ function getNeighbors(x, y) {
 }
 
 // シミュレーション速度の変更
-document.getElementById("fasterButton").addEventListener("click", () => {
+buttonFaster.addEventListener("click", () => {
     if (intervalTime > 100) {
         intervalTime -= 100;
         clearInterval(intervalId);
         intervalId = setInterval(stepSimulation, intervalTime);
     }
 });
-document.getElementById("slowerButton").addEventListener("click", () => {
+buttonSlower.addEventListener("click", () => {
     intervalTime += 100;
     clearInterval(intervalId);
     intervalId = setInterval(stepSimulation. intervalTime);
 });
 
 // シミュレーションの開始
-document.getElementById("startButton").addEventListener("click", () => {
+buttonStart.addEventListener("click", () => {
     if (intervalId) {
         clearInterval(intervalId);
     }
-    gridSize = parseInt(document.getElementById("gridSize").value);
-    J_ex = parseFloat(document.getElementById("J_ex").value);
-    intervalTime = parseInt(document.getElementById("intervalTime").value);
+    gridSize = parseInt(inputGridSize.value);
+    J_ex = parseFloat(inputJ_ex.value);
+    intervalTime = parseInt(inputInterval.value);
     initializeSpins();
     drawSpins();
     setInterval(stepSimulation, intervalTime);
