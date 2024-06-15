@@ -32,6 +32,7 @@ const buttonStop = document.getElementById("stopButton");
 const buttonContinue = document.getElementById("continueButton");
 const progressBar = document.getElementById("progressBar");
 const progressText = document.getElementById("progressText");
+const tooltip = document.getElementById("tooltip");
 
 // 初期化関数
 // spinsは0 <= Θ < 360を持つように設定
@@ -205,3 +206,16 @@ buttonContinue.addEventListener("click", () => {
     disableInputs();
     intervalId = setInterval(stepSimulation, intervalTime);
 })
+
+// infoアイコンのクリックでツールチップを表示/非表示にする
+info.addEventListener("click", (event) => {
+    event.stopPropagation(); // クリックイベントが他の要素に伝播するのを防ぐ
+    tooltip.classList.toggle("active");
+});
+
+// ホバー以外の場所がクリックされたときにツールチップを非表示にする
+document.addEventListener("click", (event) => {
+    if (!info.contains(event.target)) {
+        tooltip.classList.remove("active");
+    }
+});

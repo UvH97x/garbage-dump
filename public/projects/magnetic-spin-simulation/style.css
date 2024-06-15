@@ -70,6 +70,11 @@ button:disabled {
     width: 400px; /* ツールチップの幅を調整 */
 }
 
+#info:hover #tooltip,
+#info.active #tooltip {
+    visibility: visible;
+}
+
 #info:hover #tooltip {
     visibility: visible;
 }
