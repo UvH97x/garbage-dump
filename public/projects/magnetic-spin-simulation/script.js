@@ -11,6 +11,8 @@ let intervalId;
 let J_ex;
 let intervalTime;
 let gridSize;
+let numCalculated;
+let limit;
 
 // キャンバスの設定
 const canvas = document.getElementById("spinCanvas");
@@ -22,13 +24,25 @@ canvas.height = 500;
 const inputGridSize = document.getElementById("gridSize");
 const inputJ_ex = document.getElementById("J_ex");
 const inputInterval = document.getElementById("intervalTime");
+const inputNumOfCalculations = document.getElementById("numOfCalculations");
 const buttonFaster = document.getElementById("fasterButton");
 const buttonSlower = document.getElementById("slowerButton");
 const buttonStart = document.getElementById("startButton"); 
+const buttonStop = document.getElementById("stopButton");
+const buttonContinue = document.getElementById("continueButton");
 
 // 初期化関数
 // spinsは0 <= Θ < 360を持つように設定
 function initializeSpins() {
+    if (intervalId) {
+        clearInterval(intervalId);
+    }
+    gridSize = parseInt(inputGridSize.value);
+    J_ex = parseFloat(inputJ_ex.value);
+    intervalTime = parseInt(inputInterval.value);
+    numCalculated = 0;
+    limit = Number(inputNumOfCalculations.value);
+    spins.length = 0;
     for (let i = 0; i < gridSize; i++) {
         spins[i] = [];
         for (let j=0; j < gridSize; j++) {
@@ -64,10 +78,15 @@ function drawArrow(x, y, length, angle) {
 
 // シミュレーションステップを実行する関数
 function stepSimulation() {
+    if (limit !== 0 && numCalculated >= Number(limit)) {
+        alert("計算が" + numCalculated + "回終了しました。")
+        exitSimulation();
+    }
     const x = Math.floor(Math.random() * gridSize);
     const y = Math.floor(Math.random() * gridSize);
     spins[x][y] = calculateNewSpin(x, y);
     drawSpins();
+    numCalculated++;
 }
 
 // 次のスピンを計算する関数
@@ -119,18 +138,48 @@ buttonSlower.addEventListener("click", () => {
     intervalTime += 10;
     inputInterval.value = intervalTime;
     clearInterval(intervalId);
-    intervalId = setInterval(stepSimulation. intervalTime);
+    intervalId = setInterval(stepSimulation, intervalTime);
 });
+
+// インプット欄の有効化・無効化を制御する関数
+function disableInputs() {
+    inputGridSize.disabled = true;
+    inputJ_ex.disabled = true;
+    inputInterval.disabled = true;
+    inputNumOfCalculations.disabled = true;
+}
+function enableInputs() {
+    inputGridSize.disabled = false;
+    inputJ_ex.disabled = false;
+    inputInterval.disabled =false;
+    inputNumOfCalculations.disabled = false;
+}
+
+// シミュレーションを終了する関数
+function exitSimulation() {
+    clearInterval(intervalId);
+    enableInputs();
+    return;
+}
 
 // シミュレーションの開始
 buttonStart.addEventListener("click", () => {
-    if (intervalId) {
-        clearInterval(intervalId);
-    }
-    gridSize = parseInt(inputGridSize.value);
-    J_ex = parseFloat(inputJ_ex.value);
-    intervalTime = parseInt(inputInterval.value);
     initializeSpins();
     drawSpins();
+    disableInputs();
     intervalId = setInterval(stepSimulation, intervalTime);
 });
+
+// シミュレーションの中止
+buttonStop.addEventListener("click", () => {
+    alert("シミュレーションを中止しました。計算回数:" + numCalculated + "回");
+    exitSimulation();
+})
+
+// シミュレーションの続行
+buttonContinue.addEventListener("click", () => {
+    if (numCalculated >= limit) {
+        limit = 0;
+    }
+    intervalId = setInterval(stepSimulation, intervalTime);
+})
