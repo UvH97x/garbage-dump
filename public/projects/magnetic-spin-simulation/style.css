@@ -16,11 +16,13 @@ h1 {
     align-items: flex-start;
 }
 
+/*結果表示欄*/
 #spinCanvas {
     border: 1px solid #000;
     background-color: #fff;
 }
 
+/*設定欄*/
 #settings {
     margin-left: 20px;
     text-align: left;
@@ -30,10 +32,67 @@ h1 {
     margin-bottom: 10px;
 }
 
+/*ボタン*/
 button {
     margin: 5px;
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
     width: 150px;
+}
+
+button:disabled {
+    cursor: default;
+}
+
+/*インフォメーション*/
+#info {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    font-size: 15px;
+    cursor: pointer;
+    position: relative;
+}
+
+#tooltip {
+    visibility: hidden;
+    background-color: #555;
+    color: #fff;
+    text-align: left;
+    border-radius: 5px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    top: 130%; /* カーソルの下に表示する */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 400px; /* ツールチップの幅を調整 */
+}
+
+#info:hover #tooltip {
+    visibility: visible;
+}
+
+/*進捗バー*/
+#progressContainer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #ddd;
+    text-align: right;
+    color: #000;
+}
+
+#progressBar {
+    height: 30px;
+    background-color: #4caf50;
+    width: 0%;
+}
+
+#progressText {
+    position: absolute;
+    right: 10px;
+    top: 5px;
 }

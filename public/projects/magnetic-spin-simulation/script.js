@@ -30,6 +30,8 @@ const buttonSlower = document.getElementById("slowerButton");
 const buttonStart = document.getElementById("startButton"); 
 const buttonStop = document.getElementById("stopButton");
 const buttonContinue = document.getElementById("continueButton");
+const progressBar = document.getElementById("progressBar");
+const progressText = document.getElementById("progressText");
 
 // 初期化関数
 // spinsは0 <= Θ < 360を持つように設定
@@ -42,6 +44,7 @@ function initializeSpins() {
     intervalTime = parseInt(inputInterval.value);
     numCalculated = 0;
     limit = Number(inputNumOfCalculations.value);
+    progressBar.style.width = '0%'; // 進捗バーをリセット
     spins.length = 0;
     for (let i = 0; i < gridSize; i++) {
         spins[i] = [];
@@ -86,7 +89,15 @@ function stepSimulation() {
     const y = Math.floor(Math.random() * gridSize);
     spins[x][y] = calculateNewSpin(x, y);
     drawSpins();
+    updateProgressBar();
     numCalculated++;
+}
+
+// 進捗バーを更新する関数
+function updateProgressBar() {
+    const progress = (numCalculated / limit) * 100;
+    progressBar.style.width = `${progress}%`;
+    progressText.textContent = `${numCalculated}/${limit}`;
 }
 
 // 次のスピンを計算する関数
@@ -127,39 +138,42 @@ function getNeighbors(x, y) {
 
 // シミュレーション速度の変更
 buttonFaster.addEventListener("click", () => {
-    if (intervalTime > 10) {
-        intervalTime -= 10;
+    if (intervalTime > 1) {
+        intervalTime *= 0.1;
         inputInterval.value = intervalTime;
         clearInterval(intervalId);
         intervalId = setInterval(stepSimulation, intervalTime);
     }
 });
 buttonSlower.addEventListener("click", () => {
-    intervalTime += 10;
+    intervalTime *= 10;
     inputInterval.value = intervalTime;
     clearInterval(intervalId);
     intervalId = setInterval(stepSimulation, intervalTime);
 });
 
-// インプット欄の有効化・無効化を制御する関数
+// 不必要な欄の有効化・無効化を制御する関数
 function disableInputs() {
     inputGridSize.disabled = true;
     inputJ_ex.disabled = true;
     inputInterval.disabled = true;
     inputNumOfCalculations.disabled = true;
+    buttonStart.disabled = true;
+    buttonContinue.disabled = true;
+    buttonStop.disabled = false;
+    buttonFaster.disabled = false;
+    buttonSlower.disabled = false;
 }
 function enableInputs() {
     inputGridSize.disabled = false;
     inputJ_ex.disabled = false;
     inputInterval.disabled =false;
     inputNumOfCalculations.disabled = false;
-}
-
-// シミュレーションを終了する関数
-function exitSimulation() {
-    clearInterval(intervalId);
-    enableInputs();
-    return;
+    buttonContinue.disabled = false;
+    buttonStart.disabled = false;
+    buttonStop.disabled = true;
+    buttonFaster.disabled = true;
+    buttonSlower.disabled = true;
 }
 
 // シミュレーションの開始
@@ -170,10 +184,17 @@ buttonStart.addEventListener("click", () => {
     intervalId = setInterval(stepSimulation, intervalTime);
 });
 
+// シミュレーションを終了する関数
+function exitSimulation() {
+    clearInterval(intervalId);
+    enableInputs();
+    return;
+}
+
 // シミュレーションの中止
 buttonStop.addEventListener("click", () => {
-    alert("シミュレーションを中止しました。計算回数:" + numCalculated + "回");
     exitSimulation();
+    alert("シミュレーションを中止しました。計算回数:" + numCalculated + "回");
 })
 
 // シミュレーションの続行
@@ -181,5 +202,6 @@ buttonContinue.addEventListener("click", () => {
     if (numCalculated >= limit) {
         limit = 0;
     }
+    disableInputs();
     intervalId = setInterval(stepSimulation, intervalTime);
 })

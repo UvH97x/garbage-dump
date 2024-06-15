@@ -8,6 +8,18 @@
     </head>
     <body>
         <h1>Magnetic Spin Simulation</h1>
+        <div id="info">
+            ⓘ
+            <div id="tooltip">
+                <ul>
+                    <li>各値を設定し、Startボタンを押してください。</li>
+                    <li>設定した計算回数まで自動的に計算し続けます。</li>
+                    <li>途中でStopボタンを押すことで一時停止できます。</li>
+                    <li>Continueボタンを押せば続けて計算できます。</li>
+                    <li>Faster/Slowerボタンを押すと計算のインターバルを10倍ずつ変更できます。</li>
+                </ul>
+            </div>
+        </div>
         <div id="container">
             <canvas id="spinCanvas"></canvas>
             <div id="settings">
@@ -29,12 +41,16 @@
                 </div>
                 <div>
                     <button id="startButton">Start</button>
-                    <button id="stopButton">Stop</button>
-                    <button id="continueButton">Continue</button>
-                    <button id="fasterButton">Faster</button>
-                    <button id="slowerButton">Slower</button>
+                    <button id="stopButton" disabled="true">Stop</button>
+                    <button id="continueButton" disabled="true">Continue</button>
+                    <button id="fasterButton" disabled="true">Faster</button>
+                    <button id="slowerButton" disabled="true">Slower</button>
                 </div>
             </div>
+        </div>
+        <div id="progressContainer">
+            <div id="progressBar"></div>
+            <div id="progressText">0/0</div>
         </div>
         <script src="script.js"></script>
     </body>
