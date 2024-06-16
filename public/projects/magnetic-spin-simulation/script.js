@@ -154,7 +154,7 @@ buttonSlower.addEventListener("click", () => {
 });
 
 // 不必要な欄の有効化・無効化を制御する関数
-function disableInputs() {
+function setForStart() {
     inputGridSize.disabled = true;
     inputJ_ex.disabled = true;
     inputInterval.disabled = true;
@@ -165,7 +165,7 @@ function disableInputs() {
     buttonFaster.disabled = false;
     buttonSlower.disabled = false;
 }
-function enableInputs() {
+function setForStop() {
     inputGridSize.disabled = false;
     inputJ_ex.disabled = false;
     inputInterval.disabled =false;
@@ -181,14 +181,14 @@ function enableInputs() {
 buttonStart.addEventListener("click", () => {
     initializeSpins();
     drawSpins();
-    disableInputs();
+    setForStart();
     intervalId = setInterval(stepSimulation, intervalTime);
 });
 
 // シミュレーションを終了する関数
 function exitSimulation() {
     clearInterval(intervalId);
-    enableInputs();
+    setForStop();
     return;
 }
 
@@ -203,7 +203,7 @@ buttonContinue.addEventListener("click", () => {
     if (numCalculated >= limit) {
         limit = 0;
     }
-    disableInputs();
+    setForStart();
     intervalId = setInterval(stepSimulation, intervalTime);
 })
 
